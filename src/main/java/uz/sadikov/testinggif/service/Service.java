@@ -47,7 +47,7 @@ public class Service {
 
 
         if (isIncreased()) {
-            tag = "broke";
+            tag = "poor";
         } else tag = "rich";
         String url = "https://api.giphy.com/v1/gifs/random?api_key=" + api_key + "&tag=" + tag + "&rating=g";
         HttpResponse<String> response = getResponseFromUrl(url);
