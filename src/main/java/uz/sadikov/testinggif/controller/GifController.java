@@ -19,9 +19,7 @@ public class GifController {
 
     @GetMapping("/change/{currency}")
     public String getGiffy(@PathVariable("currency") String currency) throws IOException, InterruptedException {
-        double prev = currencyService.getPrevCurrency(currency);
-        double next = currencyService.getNewCurrency(currency);
-        boolean isIncreased = currencyService.isIncreased(prev, next);
+        boolean isIncreased = currencyService.isIncreased(currency);
         return getGifService.getGif(isIncreased);
     }
 }

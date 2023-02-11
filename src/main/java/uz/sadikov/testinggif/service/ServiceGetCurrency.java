@@ -15,25 +15,20 @@ public class ServiceGetCurrency {
     private String currency_api_key;
     GetResponser responser = new GetResponser();
 
+    public boolean isIncreased(String currency) throws IOException, InterruptedException {
 
-    public double getPrevCurrency(String currency) throws IOException, InterruptedException {
         LocalDate time = LocalDate.now().minusDays(1);
         String data = String.valueOf(time);
         String URl = String.format("https://openexchangerates.org/api/historical/%s.json?app_id=%s",data,currency_api_key);
         HttpResponse<String> response = responser.getResponseFromUrl(URl);
         JSONObject obj = new JSONObject(response.body());
-        return obj.getJSONObject("rates").getDouble(currency);
-    }
+        double prev = obj.getJSONObject("rates").getDouble(currency);
 
-    public double getNewCurrency(String currency) throws IOException, InterruptedException {
         String URL =String.format("https://openexchangerates.org/api/latest.json?app_id=%s",currency_api_key);
-        HttpResponse<String> response = responser.getResponseFromUrl(URL);
-        JSONObject obj = new JSONObject(response.body());
-        return obj.getJSONObject("rates").getDouble(currency);
+        response = responser.getResponseFromUrl(URL);
+        obj = new JSONObject(response.body());
+        double current = obj.getJSONObject("rates").getDouble(currency);
 
-    }
-
-    public boolean isIncreased(double prev, double current) {
         return prev <= current;
     }
 
