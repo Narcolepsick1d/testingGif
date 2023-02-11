@@ -2,21 +2,26 @@ package uz.sadikov.testinggif.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import uz.sadikov.testinggif.service.Service;
+import uz.sadikov.testinggif.service.ServiceGetCurrency;
+import uz.sadikov.testinggif.service.ServiceGiffy;
 
 import java.io.IOException;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
 public class GifController {
     @Autowired
-    private Service service;
+    public ServiceGiffy getGifService;
+    @Autowired
+    public ServiceGetCurrency currencyService;
 
-    @GetMapping("/hi")
-    public String getGiffy() throws IOException, InterruptedException {
-        return service.getGif();
+    @GetMapping("/change/{currency}")
+    public String getGiffy(@PathVariable("currency") String currency) throws IOException, InterruptedException {
+        double prev = currencyService.getPrevCurrency(currency);
+        double next = currencyService.getNewCurrency(currency);
+        boolean isIncreased = currencyService.isIncreased(prev, next);
+        return getGifService.getGif(isIncreased);
     }
 }
